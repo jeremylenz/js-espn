@@ -24,10 +24,10 @@
     <!-- TEAM TABLE -->
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row" >
-         <div class="col">
-           <table class="team-table">
+         <div class="col-md-12">
+           <table class="table team-table">
             <thead>
               <tr>
                 <th>Team Name</th>
@@ -51,11 +51,12 @@
    </div>
 
  <!-- TOP PLAYERS TABLE -->
- <div class="container">
+ <div class="container-fluid">
    <div class="row">
-     <div class="col">
+     <div class="col-md-12">
 
-<table class="player-table" style="display: none;">
+<table class="table player-table" style="display: none;">
+  <h3 class="player-h3">[team-name-goes-here]:</h3>
   <thead>
   <tr>
   <th>Player Name</th>
@@ -79,15 +80,24 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col">
+    <div class="col-md-12">
       <form class="add_team" action="index.html" method="post">
         <label for="team_name">Team name:</label>
         <input type="text" id="team_name" value="" placeholder="team name">
         <label for="team_city">City:</label>
         <input type="text" id="team_city" value="" placeholder="city">
-        <input type="submit" id="submit" value="Submit" class="submit">
+        <input type="submit" id="submit" value="Add team" class="team-submit">
+      </form>
+
+      <form class="add_player" action="index.html" method="post">
+        <label for="player_name">Player name:</label>
+        <input type="text" id="player_name" value="" placeholder="player name">
+        <label for="player_hometown">Hometown:</label>
+        <input type="text" id="player_hometown" value="" placeholder="hometown">
+
+        <input type="submit" id="submit" value="Add player" class="player-submit">
       </form>
 
     </div>

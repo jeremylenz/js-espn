@@ -15,7 +15,7 @@ $('body').on('click', '.display-players', function(event) {
   renderTopPlayers(teamId)
 })
 
-$('.submit').on('click', function(event) {
+$('.team-submit').on('click', function(event) {
   event.preventDefault()
   let teamName = $('#team_name').val()
   let teamCity = $('#team_city').val()
@@ -25,11 +25,27 @@ $('.submit').on('click', function(event) {
   renderTeams(".team-list-js")
 })
 
+$('.player-submit').on('click', function(event) {
+  event.preventDefault()
+  let playerName = $('#player_name').val()
+  let playerHometown = $('#player_hometown').val()
+  let playerTeam = $('.player-table').data("current_team")
+  $('#player_name').val("")
+  $('#player_hometown').val("")
+  new Player(playerName, playerTeam, playerHometown)
+  renderTopPlayers(playerTeam.id)
+})
+
 })
 
 
 const store = {players: [], teams: []}
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
 
 function CreateTeam () {
   let nextId = 0
@@ -48,8 +64,16 @@ function CreateTeam () {
       })
     }
 
+    static find(id) {
+      return store.teams.find((team) => {
+        return team.id === id
+      })
+    }
+
+
   }
 }
+
 
 function CreatePlayer (){
   let nextId = 0
@@ -60,7 +84,7 @@ function CreatePlayer (){
       this.team = team
       this.hometown = hometown
       this.id = ++nextId
-      this.points = 0
+      this.points = getRandomInt(0,700)
       store.players.push(this)
     }
 
@@ -75,10 +99,10 @@ function CreatePlayer (){
 
 let Team = CreateTeam()
 let Player = CreatePlayer()
-let tm1 = new Team('sixers', 'philly')
+let tm1 = new Team('Sixers', 'Philadelphia')
 let pl1 = new Player('jim jim', tm1, "Denver")
 let pl2 = new Player('bob bob', tm1, "Ithaca")
-let tm2 = new Team('seveners', 'east hiawatha')
+let tm2 = new Team('Seveners', 'East Hiawatha')
 let pl3 = new Player('steve steve', tm2, "Chappaqua")
 let pl4 = new Player('james james', tm2, "Queens")
 console.log('created seeds')
@@ -116,9 +140,10 @@ function playerHTML(player) {
 }
 
 function renderTopPlayers(teamId) {
-  let players = store.players.filter((player) => {
-    return player.team.id === teamId
-  })
+  let team = Team.find(teamId)
+  let players = team.players()
+  $('.player-table').data("current_team", team)
+  $('.player-h3').text(`${team.city} ${team.name}`)
   let sortedPlayers = getTopPlayers(players, 3)
   $(".player-list-js").empty()
   sortedPlayers.forEach((player => {
@@ -150,7 +175,10 @@ function deletePlayer(id) {
   let playerToDelete = store.players.find(function(player) {
     return player.id == id
   })
+  teamId = playerToDelete.team.id
   playerToDelete.destroy()
+  renderTopPlayers(teamId)
+
 }
 
 
