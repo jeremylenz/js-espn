@@ -11,6 +11,7 @@ $('body').on('click', '.del_x', function(event) {
 
 $('body').on('click', '.display-players', function(event) {
   let teamId = parseInt(this.id.split("_")[1],10)
+  $('.player-table').show()
   renderTopPlayers(teamId)
 })
 
